@@ -5,6 +5,8 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const Choices = require('inquirer/lib/objects/choices');
+const Employee = require('./lib/Employee');
+// const generateManager = require('./src/manager-html')
 const teamArray = [];
 
 //add team member to determine next function--------------------
@@ -43,12 +45,11 @@ function determineRole(confirm) {
                 else if (answers.pickTeamMember === "intern") {
                     addIntern();
                 }
-                
+
             })
     }
     else {
-        console.log('nope nope nope');
-        console.log(teamArray);
+        console.log('nope');
     };
 }
 //once role determined go to one of the following add roles--------------------
@@ -139,7 +140,7 @@ function addEngineer() {
             },
             {
                 type: 'input',
-                name: 'enginnerEmail',
+                name: 'engineerEmail',
                 message: 'What is your  engineer\'s email?'
             },
             {
@@ -157,7 +158,11 @@ function addEngineer() {
         });
 };
 addTeamMember();
-//store in array
+// console.log('hi');
+// const filterRoleResult = teamArray.filter(employee => employee.getRole() === "Manager")
+// (manager => generateHtml(manager));
+// filterRoleResult();
+// console.log('filterrole says hi');
 //send array to build HTML. 
 
 //Using .then put data into a function that will write an HTML file (fs.write file)
