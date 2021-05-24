@@ -1,5 +1,4 @@
-// const generateManager = require('./manager-html');
-
+const generateManager = require('./manager-html');
 generateHtml = function (employeeInfo) {
   return `
     <!DOCTYPE html>
@@ -18,6 +17,7 @@ generateHtml = function (employeeInfo) {
     </div>
     <section class="section">
     <div class="container">
+    ${generateManager(employeeInfo)}
     </div>
   </section>
   </body>
@@ -27,4 +27,4 @@ generateHtml = function (employeeInfo) {
 
     `;
 }
-module.exports = generateHtml();
+module.exports = generateHtml;

@@ -6,6 +6,7 @@ const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const Choices = require('inquirer/lib/objects/choices');
 const Employee = require('./lib/Employee');
+const generateManager = require('./src/manager-html');
 // const generateManager = require('./src/manager-html')
 const teamArray = [];
 
@@ -25,6 +26,8 @@ function addTeamMember() {
 };
 //team member role-----------------------------------------------
 function determineRole(confirm) {
+    console.log(confirm.anotherTeamMember);
+    console.log(confirm);
     if (confirm.anotherTeamMember === true) {
         inquirer
             .prompt([
@@ -36,6 +39,7 @@ function determineRole(confirm) {
                 },
             ])
             .then((answers) => {
+        
                 if (answers.pickTeamMember === "manager") {
                     addManager();
                 }
@@ -49,7 +53,14 @@ function determineRole(confirm) {
             })
     }
     else {
-        console.log('nope');
+        teamArray.filter(employee => employee.getRole() === "Manager")
+        .map(manager => generateManager(manager));      
+        generateHtml(teamArray);
+        console.log(generateHtml(teamArray));
+        const html = generateHtml(teamArray);
+        writeToFile('testHTML.html', (html));
+    
+
     };
 }
 //once role determined go to one of the following add roles--------------------
@@ -158,6 +169,13 @@ function addEngineer() {
         });
 };
 addTeamMember();
+function writeToFile(fileName, answers) {
+    fs.writeFile(fileName, answers, function (err) {
+        if (err) throw err;
+        console.log('file written');
+        
+    })
+};
 // console.log('hi');
 // const filterRoleResult = teamArray.filter(employee => employee.getRole() === "Manager")
 // (manager => generateHtml(manager));
@@ -167,3 +185,4 @@ addTeamMember();
 
 //Using .then put data into a function that will write an HTML file (fs.write file)
 //Make separate files for writeHtml().js, 
+module.exports = addManager;

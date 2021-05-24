@@ -1,4 +1,5 @@
 const generateManager = function (managerInfo) {
+    console.log(managerInfo);
     return `
     <div class="card">
 <div class="card-content">
@@ -27,4 +28,4 @@ Office Number: ${managerInfo.managerOfficeNumber}
 </div>
     `;
 }
-module.exports = generateManager();
+module.exports = generateManager;
