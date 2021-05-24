@@ -1,4 +1,6 @@
+const generateHtml = require('./html-template');
 const generateManager = function (managerInfo) {
+    console.log("consolelog manager info is below this");
     console.log(managerInfo);
     return `
     <div class="card">
@@ -10,7 +12,7 @@ const generateManager = function (managerInfo) {
         </figure>
     </div>
     <div class="media-content">
-        <p class="title is-4">${managerInfo.managerName}</p>
+        <p class="title is-4">${managerInfo.name}</p>
         <p class="subtitle is-6">${managerInfo.managerRole}</p>
     </div>
     </div>
@@ -27,5 +29,6 @@ Office Number: ${managerInfo.managerOfficeNumber}
 </div>
 </div>
     `;
+    generateHtml(managerInfo);
 }
 module.exports = generateManager;

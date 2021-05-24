@@ -1,15 +1,14 @@
+//constants-----------------------------------------------------
 const fs = require('fs');
 const inquirer = require('inquirer');
-const generateHtml = require('./src/html-template');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const Choices = require('inquirer/lib/objects/choices');
 const Employee = require('./lib/Employee');
 const generateManager = require('./src/manager-html');
-// const generateManager = require('./src/manager-html')
 const teamArray = [];
-
+//Start Logic--------------------------------------------------
 //add team member to determine next function--------------------
 function addTeamMember() {
     const questions = [
@@ -24,10 +23,8 @@ function addTeamMember() {
         determineRole(answers);
     })
 };
-//team member role-----------------------------------------------
+//team member role ask user what kind of team member they would like to add.----------------------------------------------------------------------------
 function determineRole(confirm) {
-    console.log(confirm.anotherTeamMember);
-    console.log(confirm);
     if (confirm.anotherTeamMember === true) {
         inquirer
             .prompt([
@@ -39,7 +36,6 @@ function determineRole(confirm) {
                 },
             ])
             .then((answers) => {
-        
                 if (answers.pickTeamMember === "manager") {
                     addManager();
                 }
@@ -49,21 +45,19 @@ function determineRole(confirm) {
                 else if (answers.pickTeamMember === "intern") {
                     addIntern();
                 }
-
             })
     }
+    //If user says they do not want to add another employee, filter through team array, pick managers & Write file-----------------------------------------------------------------------
+
     else {
         teamArray.filter(employee => employee.getRole() === "Manager")
-        .map(manager => generateManager(manager));      
-        generateHtml(teamArray);
-        console.log(generateHtml(teamArray));
+            .map(manager => generateManager(manager));
         const html = generateHtml(teamArray);
         writeToFile('testHTML.html', (html));
-    
-
     };
 }
 //once role determined go to one of the following add roles--------------------
+//Add Manager Info from User Input---------------------------------------------
 function addManager() {
     //Prompt User 
     inquirer
@@ -96,9 +90,10 @@ function addManager() {
             const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOfficeNumber);
             teamArray.push(manager);
             addTeamMember();
+            generateManager(manager);
         });
 };
-
+//Add Intern Info from User Input----------------------------------------------
 function addIntern() {
     //Prompt User 
     inquirer
@@ -133,7 +128,7 @@ function addIntern() {
             addTeamMember();
         });
 };
-
+//Add Engineer Info from User Input--------------------------------------------
 function addEngineer() {
     //Prompt User 
     inquirer
@@ -168,21 +163,40 @@ function addEngineer() {
             addTeamMember();
         });
 };
+//Ask user if they would like to add another team member----------------------
 addTeamMember();
+//Write HTML file function----------------------------------------------------
 function writeToFile(fileName, answers) {
     fs.writeFile(fileName, answers, function (err) {
         if (err) throw err;
         console.log('file written');
-        
     })
 };
-// console.log('hi');
-// const filterRoleResult = teamArray.filter(employee => employee.getRole() === "Manager")
-// (manager => generateHtml(manager));
-// filterRoleResult();
-// console.log('filterrole says hi');
-//send array to build HTML. 
-
-//Using .then put data into a function that will write an HTML file (fs.write file)
-//Make separate files for writeHtml().js, 
+//Entire HTML Generate Function---------------------------------------------
+generateHtml = function (employeeInfo) {
+    return `
+    <!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Awesome!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    </head>
+    <body>
+    <section class="section">
+    <div class="container">
+        <h1 class="The Crew">
+        </h1>
+    </div>
+    <section class="section">
+    <div class="container">
+    ${generateManager(employeeInfo)}
+    </div>
+    </section>
+    </body>
+</html>
+`;
+}
+//Module Exports----------------------------------------------------------
 module.exports = addManager;
